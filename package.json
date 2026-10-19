@@ -36,6 +36,7 @@
     "test": "node --import tsx --test src/data/*.test.ts",
     "check": "npm run typecheck && npm test",
     "export:web": "expo export --platform web",
+    "assets:sprites": "node scripts/export-design-sprites.mjs",
     "prebuild": "expo prebuild"
   },
   "private": true,

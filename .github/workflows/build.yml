@@ -35,6 +35,9 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
+        with:
+          # 'tools' was removed from Google's SDK repository; only platform-tools is needed here.
+          packages: platform-tools
       - run: npm ci
       - run: npx expo prebuild --platform android --clean --no-install
       # Expo's generated release variant uses the generated debug keystore for personal installation.
