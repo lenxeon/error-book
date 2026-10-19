@@ -19,7 +19,8 @@
 
 - iOS / Android 真机字体、安全区、大字号与完整视觉对照。
 - 原生相机授权、系统 PDF 分享与打印。
-- GitHub Actions 双平台重新构建及 APK / IPA 安装。前一次远端构建的 iOS IPA 已成功生成；Android 在 SDK 初始化阶段因请求已移除的 `tools` 包失败，工作流现已改为只安装 `platform-tools`，待重新验证。
+- GitHub Actions 构建已通过：运行 `39219316888` 的 checks、Android APK 与 iOS IPA 三个 job 全部成功。APK 和未签名 IPA 已下载至 `artifacts/39219316888/`，并通过 ZIP 完整性检查。IPA 中仅包含顶部主视觉、今日任务图和独立 sprites，没有 atlas。
+- iOS 真机安装仍需由 Sideloadly 使用个人 Apple 账号签名；这次设备安装错误是免费 Personal Team 每台设备最多安装 3 个测试 App 的限制，不是 IPA 构建失败。删除设备上一个不再使用的免费签名测试 App 后再安装，或使用付费开发者团队。
 - Sideloadly 真机重新签名安装。
 
-所以当前交付为可运行的本地实现与待运行的双平台构建配置，不是已签名安装包，也不声称已经达到逐像素一致。
+所以当前交付包含本地实现、Android APK 与待由 Sideloadly 签名的 iOS IPA；真机安装、字体和安全区等设备差异仍需在目标设备验收，不声称已经达到逐像素一致。
