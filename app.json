@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "麦森错题本",
+    "slug": "maisen-error-book",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.maisen.errorbook",
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "zh_CN",
+        "CFBundleLocalizations": [
+          "zh_CN"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.maisen.errorbook",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#D8F5ED"
+      }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "选择试卷或作业照片，收录到你的错题本。",
+          "cameraPermission": "拍摄试卷或作业，收录到你的错题本。",
+          "microphonePermission": false
+        }
+      ],
+      "expo-sharing"
+    ],
+    "web": {
+      "name": "麦森错题本",
+      "bundler": "metro"
+    },
+    "icon": "./assets/icon.png"
+  }
+}

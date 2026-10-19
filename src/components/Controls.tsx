@@ -1,0 +1,6 @@
+import React from 'react';
+import { Pressable, Text, StyleSheet, View, TextInput, TextInputProps } from 'react-native';
+import { colors } from '../theme';
+export function Button({label,onPress,secondary=false,disabled=false}:{label:string;onPress:()=>void;secondary?:boolean;disabled?:boolean}) { return <Pressable accessibilityRole="button" disabled={disabled} onPress={onPress} style={({pressed})=>[s.button,secondary&&s.secondary,disabled&&{opacity:.4},pressed&&{opacity:.75}]}><Text style={[s.label,secondary&&{color:colors.greenDark}]}>{label}</Text></Pressable>; }
+export function Field({label,...props}:TextInputProps&{label:string}) {return <View style={{gap:8}}><Text style={s.fieldLabel}>{label}</Text><TextInput accessibilityLabel={label} placeholderTextColor="#61748e" {...props} style={[s.input,props.multiline&&{minHeight:100,textAlignVertical:'top'},props.style]}/></View>;}
+const s=StyleSheet.create({button:{backgroundColor:colors.yellow,minHeight:48,borderRadius:24,alignItems:'center',justifyContent:'center',paddingHorizontal:22,paddingVertical:12},secondary:{backgroundColor:colors.paleGreen},label:{fontSize:16,fontWeight:'700',color:colors.ink},fieldLabel:{fontSize:14,fontWeight:'600',color:colors.ink},input:{borderWidth:1,borderColor:'#c9dfec',borderRadius:14,padding:14,fontSize:16,color:colors.ink,backgroundColor:'white',minHeight:48}});
