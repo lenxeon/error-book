@@ -18,7 +18,7 @@
 
 - iOS / Android 真机字体、安全区、大字号与完整视觉对照。
 - 原生相机授权、系统 PDF 分享与打印。
-- GitHub Actions 实际原生编译及 APK / IPA 安装；本轮不推送 GitHub，本机没有完整 Xcode。
+- GitHub Actions 实际原生编译及 APK / IPA 安装；本机没有完整 Xcode，且当前 GitHub CLI 登录令牌无效，尚未触发远端构建。
 - Sideloadly 真机重新签名安装。
 
 所以当前交付为可运行的本地实现与待运行的双平台构建配置，不是已签名安装包，也不声称已经达到逐像素一致。

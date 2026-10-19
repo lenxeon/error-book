@@ -27,7 +27,9 @@ APP_PATH="$(find "$ROOT_DIR/build/ios/Build/Products/Release-iphoneos" -maxdepth
 test -d "$APP_PATH"
 # A device Release build bundles JS and assets; a simulator app cannot be sideloaded.
 test -f "$APP_PATH/main.jsbundle"
-mkdir -p build/ipa/Payload
+rm -rf build/ipa
+rm -f artifacts/maisen-unsigned.ipa
+mkdir -p build/ipa/Payload artifacts
 ditto "$APP_PATH" build/ipa/Payload/MaisenErrorBook.app
 pushd build/ipa >/dev/null
 zip -qry "$ROOT_DIR/artifacts/maisen-unsigned.ipa" Payload

@@ -34,17 +34,17 @@ npm run export:web
 
 ## GitHub 打包
 
-按用户要求，当前只完成本地代码，不创建仓库、不推送。将来推送到 GitHub 后，进入 **Actions → Build Android and iOS → Run workflow**；或者推送 `v*` 标签。
+代码仓库：<https://github.com/lenxeon/error-book>。在 **Actions → Build Android and iOS → Run workflow** 选择 `main` 手动构建；推送 `v*` 标签也会启动同一流程。一个运行会并行生成 Android 与 iOS 安装包。
 
 流程先做类型检查、数据逻辑测试和网页导出，再分别生成：
 
 | 下载产物 | 用途 |
 | --- | --- |
-| `maisen-android-apk` | 解压后得到 Release APK，可安装到 Android；使用生成的测试签名，适合个人测试 |
-| `maisen-ios-unsigned-ipa` | 解压得到 `maisen-unsigned.ipa`，交给 Sideloadly 重新签名安装 |
+| `maisen-android-apk` | Actions 运行页的 Artifacts 下载项，解压后得到 Release APK，可安装到 Android；使用临时生成的测试签名，适合个人测试 |
+| `maisen-ios-unsigned-ipa` | Actions 运行页的 Artifacts 下载项，解压得到 `maisen-unsigned.ipa`，交给 Sideloadly 重新签名安装 |
 
-iOS 在 `macos-26` + Xcode 26.4.1 上生成 **iphoneos 真机 Release** 产物，关闭构建期签名，检查 JS bundle 后封装 `Payload/*.app`。不依赖 EAS 云端构建，不需要在 GitHub 配置 Apple ID。由 Sideloadly 在你的电脑上处理安装签名。此流程尚未在 GitHub 实际运行，不代表已经产出或验收安装包。
+iOS 在 `macos-26` + Xcode 26.4.1 上生成 **iphoneos 真机 Release** 产物，关闭构建期签名，检查 JS bundle 后封装 `Payload/*.app`。每次都会先清掉上次的 IPA 封装，避免旧文件混入。不依赖 EAS 云端构建，不需要在 GitHub 配置 Apple ID。由 Sideloadly 在你的电脑上处理安装签名。GitHub Actions 的原生构建尚未实际运行，因此目前还没有已生成并验收的安装包。
 
-Expo SDK 58 的 iOS 最低版本为 16.4。完整兼容要求见 [Expo 官方说明](https://docs.expo.dev/versions/latest/)。GitHub 的构建镜像见 [macOS 26 runner](https://github.com/actions/runner-images/blob/main/images/macos/macos-26-Readme.md)，安装工具见 [Sideloadly](https://sideloadly.io/)。
+Expo SDK 58 的 iOS 最低版本为 16.4。完整兼容要求见 [Expo 官方说明](https://docs.expo.dev/versions/latest/)。GitHub 的构建镜像见 [macOS 26 runner](https://github.com/actions/runner-images/blob/main/images/macos/macos-26-Readme.md)，安装工具见 [Sideloadly](https://sideloadly.io/)。Actions 产物保留 14 天，需在有效期内下载保存。
 
 素材拆解、质感约束与提示词见 [docs/design-handoff.md](docs/design-handoff.md)。
