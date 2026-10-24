@@ -26,6 +26,15 @@
     },
     "plugins": [
       [
+        "expo-camera",
+        {
+          "cameraPermission": "允许麦森错题本使用相机拍摄试卷或作业。",
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": false
+        }
+      ],
+      [
         "expo-image-picker",
         {
           "photosPermission": "选择试卷或作业照片，收录到你的错题本。",

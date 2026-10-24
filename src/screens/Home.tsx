@@ -16,7 +16,7 @@ export function Home({ state, open, select, detail }: { state: SavedState; open:
   const bodyWidth = contentWidth - 28;
   const tileWidth = (bodyWidth - 20 - 21) / 4;
   const items = activeMistakes(state);
-  const queue = practiceQueue(items, state.profile.subject, state.completed);
+  const queue = practiceQueue(items, state.profile.subject, state.completed, state.profile.dailyGoal);
   const recent = items.slice(0, 3);
   const stats = summary(items, state.profile.subject);
   const weak = stats.topics.filter(t => t.weak > 0).length;

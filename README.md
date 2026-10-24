@@ -13,7 +13,9 @@ npm ci
 npm run start
 ```
 
-手机使用兼容 SDK 58 的 Expo Go 扫码；独立安装包由 GitHub Actions 构建。网页预览：`npm run web`。
+项目包含自定义四角透视校正原生模块，不能通过 Expo Go 运行。Android 真机/模拟器首次运行请执行 `npm run android`，它会构建并安装本项目的开发客户端；iOS 请在安装 Xcode 的 Mac 上执行 `npm run ios`。安装一次开发客户端后，运行 `npm run start` 并从客户端连接开发服务器。不要用 Expo Go 扫码打开此项目。
+
+独立安装包由 GitHub Actions 构建。网页预览：`npm run web`。
 
 ```sh
 npm run check

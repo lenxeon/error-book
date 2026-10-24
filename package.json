@@ -6,7 +6,10 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~58.0.14",
+    "expo-camera": "~58.0.10",
+    "expo-dev-client": "~58.0.14",
     "expo-file-system": "~58.0.9",
+    "expo-image-manipulator": "~58.0.14",
     "expo-image-picker": "~58.0.10",
     "expo-linear-gradient": "~58.0.3",
     "expo-print": "~58.0.6",
@@ -28,12 +31,12 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test src/data/*.test.ts",
+    "test": "node --import tsx --test src/data/*.test.ts modules/*.test.ts",
     "check": "npm run typecheck && npm test",
     "export:web": "expo export --platform web",
     "assets:sprites": "node scripts/export-design-sprites.mjs",

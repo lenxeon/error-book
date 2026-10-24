@@ -1,13 +1,13 @@
 export type Subject = '数学' | '语文' | '英语';
 export type Status = '待加强' | '练习中' | '已掌握';
-export type Mistake = { id: string; title: string; subject: Subject; topic: string; question: string; answer: string; explanation: string; status: Status; createdAt: string; imageUri?: string; demo?: boolean; grade?: string };
-export type Profile = { grade: string; subject: Subject };
+export type Mistake = { id: string; title: string; subject: Subject; topic: string; question: string; answer: string; explanation: string; status: Status; createdAt: string; imageUri?: string; sourceImageUri?: string; demo?: boolean; grade?: string };
+export type Profile = { displayName: string; grade: string; subject: Subject; dailyGoal: number; reminderEnabled: boolean; reminderTime: string };
 export type SavedState = { version: 1; mistakes: Mistake[]; profile: Profile; completed: string[]; reviewDay?: string };
 export function localDay(date = new Date()) { return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`; }
 export function rollReviewDay(state: SavedState, day = localDay()): SavedState { return state.reviewDay === day ? state : {...state, reviewDay: day, completed: []}; }
 export function activeMistakes(state: SavedState) { return state.mistakes.filter(m => (m.grade ?? '四年级') === state.profile.grade && m.subject === state.profile.subject); }
 export const initialState: SavedState = {
-  version: 1, profile: { grade: '四年级', subject: '数学' }, completed: [],
+  version: 1, profile: { displayName: '小麦同学', grade: '四年级', subject: '数学', dailyGoal: 5, reminderEnabled: true, reminderTime: '18:00' }, completed: [],
   mistakes: [
     { id: 'demo-1', title: '分数应用题', subject: '数学', topic: '分数应用题', question: '一盒彩笔有 24 支，小麦用了其中的四分之一，还剩多少支？', answer: '18', explanation: '用掉：24 ÷ 4 = 6（支），剩下：24 − 6 = 18（支）。', status: '待加强', createdAt: '2026-10-19T06:20:00Z', demo: true },
     { id: 'demo-2', title: '几何面积', subject: '数学', topic: '图形与几何', question: '一个长方形长 12 厘米，宽 8 厘米，面积是多少平方厘米？', answer: '96', explanation: '长方形面积 = 长 × 宽 = 12 × 8 = 96（平方厘米）。', status: '练习中', createdAt: '2026-10-18T11:10:00Z', demo: true },
@@ -17,8 +17,8 @@ export const initialState: SavedState = {
     { id: 'demo-6', title: '长度单位换算', subject: '数学', topic: '单位换算', question: '2 米 35 厘米等于多少厘米？', answer: '235', explanation: '1 米 = 100 厘米，所以 200 + 35 = 235（厘米）。', status: '待加强', createdAt: '2026-10-09T03:00:00Z', demo: true },
   ],
 };
-export function practiceQueue(mistakes: Mistake[], subject: Subject, completed: string[]) {
-  return mistakes.filter(m => m.subject === subject && m.status !== '已掌握' && !completed.includes(m.id)).slice(0, 5);
+export function practiceQueue(mistakes: Mistake[], subject: Subject, completed: string[], limit = 5) {
+  return mistakes.filter(m => m.subject === subject && m.status !== '已掌握' && !completed.includes(m.id)).slice(0, Math.max(0, limit));
 }
 export function summary(mistakes: Mistake[], subject: Subject) {
   const items = mistakes.filter(m => m.subject === subject);
@@ -31,8 +31,11 @@ export function parseSavedState(raw: string): SavedState {
   if (!value || typeof value !== 'object') throw new Error('数据格式无效');
   const s = value as SavedState;
   if (s.version !== 1 || !Array.isArray(s.mistakes) || !Array.isArray(s.completed) || s.completed.some(x => typeof x !== 'string') || !s.profile || !['一年级','二年级','三年级','四年级','五年级','六年级'].includes(s.profile.grade) || !['数学','语文','英语'].includes(s.profile.subject)) throw new Error('数据格式无效');
-  if (s.mistakes.some(m => !m || ['id','title','topic','question','answer','explanation','createdAt'].some(k => typeof m[k as keyof Mistake] !== 'string') || !['数学','语文','英语'].includes(m.subject) || !['待加强','练习中','已掌握'].includes(m.status) || (m.imageUri !== undefined && typeof m.imageUri !== 'string'))) throw new Error('错题数据无效');
-  return s;
+  const profile = s.profile as Profile;
+  if ((profile.displayName !== undefined && typeof profile.displayName !== 'string') || (profile.dailyGoal !== undefined && (!Number.isInteger(profile.dailyGoal) || profile.dailyGoal < 1 || profile.dailyGoal > 20)) || (profile.reminderEnabled !== undefined && typeof profile.reminderEnabled !== 'boolean') || (profile.reminderTime !== undefined && !/^([01]\d|2[0-3]):[0-5]\d$/.test(profile.reminderTime))) throw new Error('个人设置无效');
+  if (s.mistakes.some(m => !m || ['id','title','topic','question','answer','explanation','createdAt'].some(k => typeof m[k as keyof Mistake] !== 'string') || !['数学','语文','英语'].includes(m.subject) || !['待加强','练习中','已掌握'].includes(m.status) || (m.imageUri !== undefined && typeof m.imageUri !== 'string') || (m.sourceImageUri !== undefined && typeof m.sourceImageUri !== 'string'))) throw new Error('错题数据无效');
+  // Older local records predate profile preferences; add safe defaults without changing their study data.
+  return { ...s, profile: { ...profile, displayName: profile.displayName ?? '小麦同学', dailyGoal: profile.dailyGoal ?? 5, reminderEnabled: profile.reminderEnabled ?? true, reminderTime: profile.reminderTime ?? '18:00' } };
 }
 export function escapeHtml(text: string) { return text.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!)); }
 export function paperHtml(items: Mistake[], answers = false) {
