@@ -42,7 +42,8 @@
           "microphonePermission": false
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      "expo-status-bar"
     ],
     "web": {
       "name": "麦森错题本",
